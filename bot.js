@@ -1,4 +1,4 @@
-hereconst TelegramBot = require('node-telegram-bot-api');
+const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -11,8 +11,8 @@ const io = socketIo(server);
 
 // ════════════════════════════════════════════════════
 // ███  ضع معلومات البوت هنا  ███
-const BOT_TOKEN = '8209265822:AAHY3qWox6vmKvv4Er8RSy_gsV2_o8MrK6E';
-const ADMIN_CHAT_ID = '7604667042';
+const BOT_TOKEN = process.env.BOT_TOKEN || '8209265822:AAHY3qWox6vmKvv4Er8RSy_gsV2_o8MrK6E';
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '7604667042';
 const PORT = process.env.PORT || 3000;
 // ██████████████████████████████████████████████████
 
@@ -68,7 +68,7 @@ bot.onText(/\/start/, (msg) => {
 /stats - الإحصائيات
 
 🌐 *لوحة التحكم:*
-رابط الإدارة: https://king-pro.onrender.com`;
+رابط الإدارة: https://king5-bot.onrender.com`;
 
   bot.sendMessage(chatId, welcomeMsg, { parse_mode: 'Markdown' });
   
@@ -107,22 +107,53 @@ bot.onText(/\/stats/, (msg) => {
   bot.sendMessage(chatId, statsMsg, { parse_mode: 'Markdown' });
 });
 
+// معالجة الرسائل العادية
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  
+  if (msg.text && !msg.text.startsWith('/')) {
+    botStats.totalMessages++;
+    
+    if (connectedUsers.has(chatId)) {
+      const user = connectedUsers.get(chatId);
+      user.messageCount++;
+      user.lastActivity = new Date();
+    }
+
+    io.emit('newMessage', {
+      user: msg.from.first_name,
+      message: msg.text,
+      timestamp: new Date()
+    });
+  }
+});
+
 // ويب سوكيت
 io.on('connection', (socket) => {
   console.log('👤 مستخدم متصل بالواجهة');
+  
   socket.emit('initialData', {
     users: Array.from(connectedUsers.values()),
     stats: botStats
+  });
+
+  socket.on('disconnect', () => {
+    console.log('👤 مستخدم مغادر من الواجهة');
   });
 });
 
 // تشغيل السيرفر
 server.listen(PORT, () => {
   console.log(`🚀 السيرفر شغال على البورت ${PORT}`);
-  console.log(`📊 لوحة التحكم جاهزة`);
+  console.log(`📊 لوحة التحكم: http://localhost:${PORT}`);
+  console.log(`🤖 البوت جاهز للاستخدام!`);
 });
 
 // معالجة الأخطاء
 bot.on('error', (error) => {
   console.log('❌ خطأ في البوت:', error);
+});
+
+process.on('uncaughtException', (error) => {
+  console.log('❌ خطأ غير متوقع:', error);
 });
