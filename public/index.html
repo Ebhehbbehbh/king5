@@ -1,0 +1,81 @@
+here<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم البوت الاحترافي</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- الهيدر -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🤖 لوحة تحكم البوت</h1>
+                <div class="status">
+                    <span class="status-indicator online"></span>
+                    <span>البوت نشط</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- الإحصائيات -->
+        <section class="stats-section">
+            <h2>📊 الإحصائيات الحية</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-label">المستخدمين</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalMessages">0</div>
+                        <div class="stat-label">الرسائل</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🕐</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="uptime">0</div>
+                        <div class="stat-label">مدة التشغيل</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="activeUsers">0</div>
+                        <div class="stat-label">نشطين الآن</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- المستخدمين -->
+        <section class="users-section">
+            <h2>👥 المستخدمين النشطين</h2>
+            <div class="users-container">
+                <div id="usersList" class="users-list">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+        </section>
+
+        <!-- الرسائل المباشرة -->
+        <section class="messages-section">
+            <h2>💬 آخر الرسائل</h2>
+            <div class="messages-container">
+                <div id="liveMessages" class="messages-list">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
