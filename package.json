@@ -1,0 +1,19 @@
+{
+  "name": "king-pro-bot",
+  "version": "1.0.0",
+  "description": "بوت تلجرام احترافي مع لوحة تحكم",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.5",
+    "moment": "^2.29.4"
+  },
+  "keywords": ["telegram", "bot", "dashboard"],
+  "author": "Qutaiba",
+  "license": "MIT"
+}
